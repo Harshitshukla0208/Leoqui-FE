@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export function FeaturesSection() {
   const features = [
     {
@@ -52,9 +54,11 @@ export function FeaturesSection() {
                 <div
                   className={`relative rounded-2xl overflow-hidden ${feature.bgColor} p-8 flex items-center justify-center`}
                 >
-                  <img
+                  <Image
                     src={feature.image || "/placeholder.svg"}
                     alt={feature.title}
+                    width={400}
+                    height={256}
                     className="w-full h-64 object-cover rounded-xl"
                   />
                 </div>
@@ -72,9 +76,11 @@ export function FeaturesSection() {
                 <div
                   className={`relative rounded-2xl overflow-hidden ${feature.bgColor} p-8 flex items-center justify-center`}
                 >
-                  <img
+                  <Image
                     src={feature.image || "/placeholder.svg"}
                     alt={feature.title}
+                    width={400}
+                    height={256}
                     className="w-full h-64 object-cover rounded-xl"
                   />
                 </div>

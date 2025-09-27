@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import Image from 'next/image'
-import { ArrowLeft, Phone, Mail } from 'lucide-react'
+import { Phone, Mail } from 'lucide-react'
 import Logo from '@/assets/create-profile/LeoQuiIconBall.png'
 import GoogleIcon from '@/assets/google.png'
 import { redirectBasedOnProfile } from '@/utils/auth'
@@ -58,7 +58,7 @@ export function AuthForm() {
       handleGoogleCallback(code)
       window.history.replaceState({}, document.title, window.location.pathname)
     }
-  }, [])
+  }, [handleGoogleCallback])
 
   const handleSuccessfulAuth = async (access_token: string, login_id?: string) => {
     setCookie('access_token', access_token, 1)
@@ -80,8 +80,9 @@ export function AuthForm() {
         return
       }
       await handleSuccessfulAuth(data.access_token, data.login_id)
-    } catch (err: any) {
-      toast.error(err.message || 'An error occurred during login')
+    } catch (err: unknown) {
+      const error = err as Error
+      toast.error(error.message || 'An error occurred during login')
     } finally {
       setLoading(false)
     }
@@ -98,8 +99,9 @@ export function AuthForm() {
       setSignupPassword(password)
       setPassword('')
       setView('confirm')
-    } catch (err: any) {
-      toast.error(err.message || 'An error occurred during signup')
+    } catch (err: unknown) {
+      const error = err as Error
+      toast.error(error.message || 'An error occurred during signup')
     } finally {
       setLoading(false)
     }
@@ -118,8 +120,9 @@ export function AuthForm() {
         toast.success('Account confirmed, please login')
         setView('login')
       }
-    } catch (err: any) {
-      toast.error(err.message || 'An error occurred during confirmation')
+    } catch (err: unknown) {
+      const error = err as Error
+      toast.error(error.message || 'An error occurred during confirmation')
     } finally {
       setLoading(false)
     }
@@ -132,8 +135,9 @@ export function AuthForm() {
       const data = await res.json()
       if (!res.ok) throw new Error(data?.message || 'Failed to resend code')
       toast.success(data?.message || 'Code resent successfully')
-    } catch (err: any) {
-      toast.error(err.message || 'An error occurred while resending code')
+    } catch (err: unknown) {
+      const error = err as Error
+      toast.error(error.message || 'An error occurred while resending code')
     } finally {
       setLoading(false)
     }
@@ -148,8 +152,9 @@ export function AuthForm() {
       if (!res.ok) throw new Error(data?.message || 'Reset initiation failed')
       toast.success('Reset code sent to your email')
       setView('resetConfirm')
-    } catch (err: any) {
-      toast.error(err.message || 'An error occurred during password reset')
+    } catch (err: unknown) {
+      const error = err as Error
+      toast.error(error.message || 'An error occurred during password reset')
     } finally {
       setLoading(false)
     }
@@ -164,8 +169,9 @@ export function AuthForm() {
       if (!res.ok) throw new Error(data?.message || 'Reset confirmation failed')
       toast.success('Password reset successful. Please log in.')
       setView('login')
-    } catch (err: any) {
-      toast.error(err.message || 'An error occurred during password reset')
+    } catch (err: unknown) {
+      const error = err as Error
+      toast.error(error.message || 'An error occurred during password reset')
     } finally {
       setLoading(false)
     }
@@ -189,15 +195,12 @@ export function AuthForm() {
       }
       const userIdentifier = data?.user?.sub || data?.user?.email || data?.user?.username
       await handleSuccessfulAuth(data?.access_token || data?.data?.access_token, userIdentifier)
-    } catch (err: any) {
-      toast.error(err.message || 'Google authentication failed')
+    } catch (err: unknown) {
+      const error = err as Error
+      toast.error(error.message || 'Google authentication failed')
     } finally {
       setLoading(false)
     }
-  }
-
-  const handleBack = () => {
-    window.history.back()
   }
 
   return (
