@@ -45,6 +45,34 @@ export function AuthForm() {
   const [newPassword, setNewPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const handleSuccessfulAuth = useCallback(async (access_token: string, login_id?: string) => {
+    setCookie('access_token', access_token, 1)
+    if (login_id) setCookie('login_id', login_id, 1)
+    toast.success('Logged in successfully')
+    await redirectBasedOnProfile()
+  }, [])
+
+  const handleGoogleCallback = useCallback(async (code: string) => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) })
+      const data = await res.json()
+      // Check for all error cases
+      if (!res.ok || data.status === false || !(data?.access_token || data?.data?.access_token) || data?.access_token === 'undefined' || data?.data?.access_token === 'undefined') {
+        const errorMsg = data?.message || data?.detail || 'Google authentication failed'
+        toast.error(errorMsg)
+        return
+      }
+      const userIdentifier = data?.user?.sub || data?.user?.email || data?.user?.username
+      await handleSuccessfulAuth(data?.access_token || data?.data?.access_token, userIdentifier)
+    } catch (err: unknown) {
+      const error = err as Error
+      toast.error(error.message || 'Google authentication failed')
+    } finally {
+      setLoading(false)
+    }
+  }, [handleSuccessfulAuth])
+
   useEffect(() => {
     const url = new URL(window.location.href)
     const code = url.searchParams.get('code')
@@ -59,13 +87,6 @@ export function AuthForm() {
       window.history.replaceState({}, document.title, window.location.pathname)
     }
   }, [handleGoogleCallback])
-
-  const handleSuccessfulAuth = async (access_token: string, login_id?: string) => {
-    setCookie('access_token', access_token, 1)
-    if (login_id) setCookie('login_id', login_id, 1)
-    toast.success('Logged in successfully')
-    await redirectBasedOnProfile()
-  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -181,27 +202,6 @@ export function AuthForm() {
     RedirectionManager.set('/profile/create')
     window.location.href = COGNITO_URL
   }
-
-  const handleGoogleCallback = useCallback(async (code: string) => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) })
-      const data = await res.json()
-      // Check for all error cases
-      if (!res.ok || data.status === false || !(data?.access_token || data?.data?.access_token) || data?.access_token === 'undefined' || data?.data?.access_token === 'undefined') {
-        const errorMsg = data?.message || data?.detail || 'Google authentication failed'
-        toast.error(errorMsg)
-        return
-      }
-      const userIdentifier = data?.user?.sub || data?.user?.email || data?.user?.username
-      await handleSuccessfulAuth(data?.access_token || data?.data?.access_token, userIdentifier)
-    } catch (err: unknown) {
-      const error = err as Error
-      toast.error(error.message || 'Google authentication failed')
-    } finally {
-      setLoading(false)
-    }
-  }, [handleSuccessfulAuth])
 
   return (
     <div className="min-h-screen w-full">
