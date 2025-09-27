@@ -67,14 +67,18 @@ export function PlatformPreview() {
                   <div className="h-4 bg-gray-200 rounded w-3/4"></div>
                   <div className="h-4 bg-gray-200 rounded w-1/2"></div>
                   <div className="flex gap-4 mt-6">
-                    <img
+                    <Image
                       src="/student-learning.png"
                       alt="Learning illustration"
+                      width={120}
+                      height={80}
                       className="w-30 h-20 rounded-lg object-cover"
                     />
-                    <img
+                    <Image
                       src="/education-technology.png"
                       alt="Education tech"
+                      width={120}
+                      height={80}
                       className="w-30 h-20 rounded-lg object-cover"
                     />
                   </div>

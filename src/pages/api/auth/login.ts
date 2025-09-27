@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
     const data = await r.json()
     return res.status(r.status).json(data)
-  } catch (e) {
+  } catch {
     return res.status(500).json({ message: 'Something went wrong' })
   }
 }

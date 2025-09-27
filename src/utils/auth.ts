@@ -41,7 +41,7 @@ export const logout = () => {
     }
 }
 
-export const checkUserProfile = async (): Promise<{ exists: boolean; profile?: any }> => {
+export const checkUserProfile = async (): Promise<{ exists: boolean; profile?: unknown }> => {
     try {
         const response = await fetch('/api/get-user-profile')
 

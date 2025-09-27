@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 export function TargetAudience() {
   return (
     <section className="w-full px-6 py-20 bg-[#F3EADB]">
@@ -15,20 +17,26 @@ export function TargetAudience() {
 
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
-              <img src="/happy-student-with-graduation-cap.jpg" alt="Student" className="w-full h-48 object-cover rounded-2xl" />
-              <img
+              <Image src="/happy-student-with-graduation-cap.jpg" alt="Student" width={300} height={192} className="w-full h-48 object-cover rounded-2xl" />
+              <Image
                 src="/placeholder-0bwxa.png"
                 alt="Parent and child"
+                width={300}
+                height={192}
                 className="w-full h-48 object-cover rounded-2xl mt-8"
               />
-              <img
+              <Image
                 src="/placeholder-c8ip3.png"
                 alt="Teacher"
+                width={300}
+                height={192}
                 className="w-full h-48 object-cover rounded-2xl -mt-8"
               />
-              <img
+              <Image
                 src="/diverse-group-of-students-studying.jpg"
                 alt="Students studying"
+                width={300}
+                height={192}
                 className="w-full h-48 object-cover rounded-2xl"
               />
             </div>
