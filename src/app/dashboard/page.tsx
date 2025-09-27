@@ -140,15 +140,7 @@ const Dashboard = () => {
 
     const subjectColors = ['bg-white']
 
-    // Map subject names to their corresponding images
-    const subjectImages: Record<string, any> = {
-        computer: ComputerImg,
-        english: EnglishImg,
-        hindi: HindiImg,
-        maths: MathsImg,
-        mathematics: MathsImg,
-        math: MathsImg,
-    };
+    // Removed unused subjectImages
 
     // Helper to get subject image, fallback to EnglishImg
     const getSubjectImage = (rawName: string) => {
@@ -418,7 +410,7 @@ const Dashboard = () => {
                                 const totalFields = fields.length;
                                 const filledFields = fields.filter(v => typeof v === 'number' ? true : !!(typeof v === 'string' ? v.trim() : v)).length;
                                 const percent = Math.round((filledFields / totalFields) * 100);
-                                const isComplete = percent >= 100 || profile.profile_completed;
+                                // Removed unused isComplete
                                 return (
                                     <>
                                         <div className="space-y-2 text-xs sm:text-sm">

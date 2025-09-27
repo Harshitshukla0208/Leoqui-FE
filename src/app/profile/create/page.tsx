@@ -162,9 +162,10 @@ export default function CreateProfile() {
                 router.push('/dashboard')
             }, 1500)
 
-        } catch (error: any) {
-            console.error('Error creating profile:', error)
-            toast.error(error.message || 'Failed to create profile')
+        } catch (error: unknown) {
+            const err = error as Error
+            console.error('Error creating profile:', err)
+            toast.error(err.message || 'Failed to create profile')
         } finally {
             setSubmitting(false)
         }

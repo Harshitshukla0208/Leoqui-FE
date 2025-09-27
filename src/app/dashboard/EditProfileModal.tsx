@@ -26,7 +26,7 @@ export default function EditProfileModal({ open, onClose, profile }: EditProfile
     // Local editable state
     const [firstName, setFirstName] = useState(profile.first_name || '')
     const [lastName, setLastName] = useState(profile.last_name || '')
-    const [email, setEmail] = useState(profile.email || '')
+    const [email] = useState(profile.email || '')
     const [phone, setPhone] = useState(profile.phone_no || '')
     const [gender, setGender] = useState(profile.gender || '')
     // Convert DD/MM/YYYY -> YYYY-MM-DD for <input type="date"/>
@@ -100,7 +100,7 @@ export default function EditProfileModal({ open, onClose, profile }: EditProfile
             }
         }
         fetchGrades()
-    }, [board])
+    }, [board, grade])
 
     const isFormValid = useMemo(() => {
         return (
@@ -149,9 +149,10 @@ export default function EditProfileModal({ open, onClose, profile }: EditProfile
             if (typeof window !== 'undefined') {
                 window.location.reload()
             }
-        } catch (err: any) {
-            console.error('Update profile failed', err)
-            toast.error(err?.message || 'Failed to update profile')
+        } catch (err: unknown) {
+            const error = err as Error
+            console.error('Update profile failed', error)
+            toast.error(error?.message || 'Failed to update profile')
         }
     }, [isFormValid, firstName, lastName, userType, board, grade, studentName, phone, gender, dob, onClose])
 

@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
@@ -182,7 +182,7 @@ export function AuthForm() {
     window.location.href = COGNITO_URL
   }
 
-  const handleGoogleCallback = async (code: string) => {
+  const handleGoogleCallback = useCallback(async (code: string) => {
     setLoading(true)
     try {
       const res = await fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) })
@@ -201,7 +201,7 @@ export function AuthForm() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [handleSuccessfulAuth])
 
   return (
     <div className="min-h-screen w-full">
